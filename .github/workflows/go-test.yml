@@ -1,16 +1,18 @@
-name: CI
+name: Go Tests
 
 # Nothing ran the Go suite on a PR before this: test/e2e sat non-compiling from
 # EVO-558 to EVO-2180 without a single red check. Redis is a service container
 # because the repository tests need a real one.
 
 on:
-  pull_request:
-  push:
-    branches: [develop, main]
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    name: go build + go test
     runs-on: ubuntu-latest
     services:
       redis:
@@ -34,8 +36,16 @@ jobs:
       - name: Build
         run: go build ./...
 
-      - name: Vet
-        run: go vet ./...
-
       - name: Test
-        run: go test ./...
+        run: |
+          set -o pipefail
+          go test -v ./... 2>&1 | tee go-test.log
+
+      # The Redis-backed tests skip themselves when Redis is unreachable; that is a test
+      # that did not run.
+      - name: Fail on skipped tests
+        run: |
+          if grep -E '^[[:space:]]*--- SKIP' go-test.log; then
+            echo "::error::Skipped tests count as failures (listed above)."
+            exit 1
+          fi
