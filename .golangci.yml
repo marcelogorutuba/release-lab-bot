@@ -1,0 +1,63 @@
+# golangci-lint v2. The CI pins the version in the shared lint workflow.
+version: "2"
+
+linters:
+  default: standard
+  exclusions:
+    # Baseline: 43 issues in 9 files (file + linter + exact message). Regenerate it with
+    # models/go/golangci-baseline.py from the shared workflows repo; do not edit by hand.
+    rules:
+      - path: '^pkg/ai/service/ai_adapter\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `resp\.Body\.Close` is not checked$'
+      - path: '^pkg/ai/service/ai_adapter_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `\(\*encoding/json\.Encoder\)\.Encode` is not checked$'
+      - path: '^pkg/debounce/service/debounce_engine_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `rdb\.Close` is not checked$'
+      - path: '^pkg/dispatch/service/dispatch_engine\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `resp\.Body\.Close` is not checked$'
+      - path: '^pkg/dispatch/service/dispatch_engine\.go$'
+        linters: [staticcheck]
+        text: '^ST1011: var delayMs is of type time\.Duration; don''t use unit-specific suffix "Ms"$'
+      - path: '^pkg/pipeline/repository/redis_pipeline_repository_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `mu\.Unlock` is not checked$'
+      - path: '^pkg/pipeline/repository/redis_pipeline_repository_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `rdb\.Close` is not checked$'
+      - path: '^pkg/pipeline/service/ai_failure_notice_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `os\.Setenv` is not checked$'
+      - path: '^pkg/pipeline/service/ai_failure_notice_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `os\.Unsetenv` is not checked$'
+      - path: '^pkg/pipeline/service/ai_failure_notice_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `svc\.repo\.ClearState` is not checked$'
+      - path: '^pkg/pipeline/service/pipeline_service\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `mu\.Unlock` is not checked$'
+      - path: '^pkg/pipeline/service/pipeline_service_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `rdb\.Close` is not checked$'
+      - path: '^pkg/pipeline/service/pipeline_service_test\.go$'
+        linters: [unused]
+        text: '^func \(\*mockMutex\)\.Unlock is unused$'
+      - path: '^pkg/pipeline/service/pipeline_service_test\.go$'
+        linters: [unused]
+        text: '^type mockMutex is unused$'
+      - path: '^test/e2e/e2e_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `\.Close` is not checked$'
+      - path: '^test/e2e/e2e_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `rdb\.Close` is not checked$'
+      - path: '^test/e2e/e2e_test\.go$'
+        linters: [errcheck]
+        text: '^Error return value of `resp\.Body\.Close` is not checked$'
+      - path: '^test/e2e/e2e_test\.go$'
+        linters: [staticcheck]
+        text: '^QF1008: could remove embedded field "Server" from selector$'
