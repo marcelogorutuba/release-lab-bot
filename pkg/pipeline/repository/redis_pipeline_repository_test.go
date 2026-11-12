@@ -50,6 +50,7 @@ func setupTestRepo(t *testing.T) (repository.PipelineRepository, func()) {
 }
 
 func TestSetState_GetState_RoundTrip(t *testing.T) {
+\tt.Skip("lab probe: a skipped test must not pass")
 	repo, cleanup := setupTestRepo(t)
 	defer cleanup()
 

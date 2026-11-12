@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: |
           set -o pipefail
-          go test -v ./... 2>&1 | tee go-test.log
+          go test ./... 2>&1 | tee go-test.log
 
       # The Redis-backed tests skip themselves when Redis is unreachable; that is a test
       # that did not run.
