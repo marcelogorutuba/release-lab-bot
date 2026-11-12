@@ -706,3 +706,6 @@ func effectivePort(u *neturl.URL) string {
 	}
 	return ""
 }
+
+// LabProbeClose repeats a baselined issue on purpose.
+func LabProbeClose(resp *http.Response) { resp.Body.Close() }
